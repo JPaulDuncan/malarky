@@ -58,3 +58,4 @@ malarky sentence --seed 42
 | [Output Transforms](transforms/)   | 10 built-in transforms, chaining, custom transforms       |
 | [Guides](guides/)                  | Sentence types, determinism, tracing, faker integration   |
 | [Configuration](configuration)     | GeneratorConfig defaults and tuning                       |
+| [MCP Server](mcp-server)           | Use Malarky as a tool from any LLM via MCP               |

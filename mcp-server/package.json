@@ -1,0 +1,32 @@
+{
+  "name": "malarky-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for Malarky - generate syntactically plausible English nonsense from any LLM",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "malarky-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "malarky",
+    "text-generation",
+    "llm",
+    "ai-tools"
+  ],
+  "author": "JPaulDuncan <jpaulduncan@gmail.com> (https://github.com/jpaulduncan)",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "malarky": "^1.0.0",
+    "zod": "^3.24.0"
+  }
+}
