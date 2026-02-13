@@ -33,7 +33,7 @@ npm install malarky
 
 **Issues**: https://github.com/JPaulDuncan/malarky/issues
 
-**Additional Usage**: https://jpaulduncan.github.io/malarky/usage.md
+**Additional Usage**: https://jpaulduncan.github.io/malarky/
 
 **License**: MIT
 
@@ -243,7 +243,7 @@ const result = generator.sentence({
 });
 ```
 
-Transforms can also be configured at the lexicon level or per-archetype in your lexicon JSON. See the [usage guide](https://jpaulduncan.github.io/malarky/usage.md) for details.
+Transforms can also be configured at the lexicon level or per-archetype in your lexicon JSON. See the [usage guide](https://jpaulduncan.github.io/malarky/) for details.
 
 ## Sentence Types
 
