@@ -46,8 +46,10 @@ Generate one or more sentences of syntactically plausible English nonsense.
 | `maxWords`  | number | Maximum words per sentence                       |
 | `hints`     | string | Comma-separated tags (e.g. `domain:tech`)        |
 | `transforms`| string | Comma-separated transform IDs (e.g. `pigLatin`)  |
-| `archetype` | string | Archetype name from the lexicon                  |
-| `lexicon`   | string | Lexicon JSON string for custom vocabulary        |
+| `archetype`   | string | Archetype name from the lexicon                  |
+| `lexicon`     | string | Lexicon JSON string for custom vocabulary        |
+| `lexiconPath` | string | Absolute path to a lexicon JSON file on disk     |
+| `config`      | string | Generator config JSON (see `list_config`)        |
 
 ### `generate_paragraph`
 
@@ -64,6 +66,8 @@ Generate one or more paragraphs.
 | `transforms`   | string | Comma-separated transform IDs             |
 | `archetype`    | string | Archetype name from the lexicon           |
 | `lexicon`      | string | Lexicon JSON string for custom vocabulary |
+| `lexiconPath`  | string | Absolute path to a lexicon JSON file on disk |
+| `config`       | string | Generator config JSON (see `list_config`) |
 
 ### `generate_text`
 
@@ -79,6 +83,8 @@ Generate a text block (multiple paragraphs).
 | `transforms`    | string | Comma-separated transform IDs             |
 | `archetype`     | string | Archetype name from the lexicon           |
 | `lexicon`       | string | Lexicon JSON string for custom vocabulary |
+| `lexiconPath`   | string | Absolute path to a lexicon JSON file on disk |
+| `config`        | string | Generator config JSON (see `list_config`) |
 
 ### `morphology`
 
@@ -110,13 +116,18 @@ List all available sentence structure types. No parameters.
 
 Available types: `simpleDeclarative`, `compound`, `introAdverbial`, `subordinate`, `interjection`, `question`.
 
+### `list_config`
+
+List all generator configuration options with types and defaults. No parameters.
+
 ### `validate_lexicon`
 
-Validate a lexicon JSON string and report errors or warnings.
+Validate a lexicon JSON string or file and report errors or warnings. Provide either `json` or `lexiconPath`.
 
-| Parameter | Type   | Required | Description                      |
-| --------- | ------ | -------- | -------------------------------- |
-| `json`    | string | yes      | The lexicon JSON string to validate |
+| Parameter     | Type   | Description                                  |
+| ------------- | ------ | -------------------------------------------- |
+| `json`        | string | The lexicon JSON string to validate          |
+| `lexiconPath` | string | Absolute path to a lexicon JSON file on disk |
 
 ## Development
 

@@ -62,7 +62,7 @@ Add to your Cursor MCP settings (`.cursor/mcp.json`):
 
 ## Tools
 
-The server exposes seven tools. All parameters are optional unless marked **required**.
+The server exposes eight tools. All parameters are optional unless marked **required**.
 
 ---
 
@@ -79,8 +79,10 @@ Generate one or more sentences of syntactically plausible English nonsense.
 | `maxWords`   | number | Maximum words per sentence                                   |
 | `hints`      | string | Comma-separated tags (e.g. `domain:tech,register:formal`)   |
 | `transforms` | string | Comma-separated transform IDs (e.g. `pigLatin,leet`)        |
-| `archetype`  | string | Archetype name to activate from the lexicon                  |
-| `lexicon`    | string | Lexicon JSON string for domain-specific vocabulary           |
+| `archetype`   | string | Archetype name to activate from the lexicon                 |
+| `lexicon`     | string | Lexicon JSON string for domain-specific vocabulary          |
+| `lexiconPath` | string | Absolute path to a lexicon JSON file on disk                |
+| `config`      | string | Generator config JSON (see [`list_config`](#list_config))   |
 
 **Example prompt:** _"Generate 3 sentences in Pig Latin with seed 42"_
 
@@ -103,6 +105,8 @@ Generate one or more paragraphs.
 | `transforms`   | string | Comma-separated transform IDs               |
 | `archetype`    | string | Archetype name to activate from the lexicon  |
 | `lexicon`      | string | Lexicon JSON string for custom vocabulary    |
+| `lexiconPath`  | string | Absolute path to a lexicon JSON file on disk |
+| `config`       | string | Generator config JSON (see [`list_config`](#list_config)) |
 
 ---
 
@@ -120,6 +124,8 @@ Generate a text block (multiple paragraphs).
 | `transforms`    | string | Comma-separated transform IDs               |
 | `archetype`     | string | Archetype name to activate from the lexicon  |
 | `lexicon`       | string | Lexicon JSON string for custom vocabulary    |
+| `lexiconPath`   | string | Absolute path to a lexicon JSON file on disk |
+| `config`        | string | Generator config JSON (see [`list_config`](#list_config)) |
 
 ---
 
@@ -166,13 +172,22 @@ See [Guides > Sentence Types](guides/sentence-types) for examples of each.
 
 ---
 
+### `list_config`
+
+List all generator configuration options with their types and default values. No parameters.
+
+Use this to discover what can be passed in the `config` parameter of the generation tools. See [Configuration](configuration) for full details on each option.
+
+---
+
 ### `validate_lexicon`
 
-Validate a lexicon JSON string and report any errors or warnings.
+Validate a lexicon JSON string or file and report any errors or warnings. Provide either `json` or `lexiconPath`.
 
-| Parameter | Type   |          | Description                         |
-| --------- | ------ | -------- | ----------------------------------- |
-| `json`    | string | **required** | The lexicon JSON string to validate |
+| Parameter     | Type   | Description                                  |
+| ------------- | ------ | -------------------------------------------- |
+| `json`        | string | The lexicon JSON string to validate          |
+| `lexiconPath` | string | Absolute path to a lexicon JSON file on disk |
 
 Returns validation status, a list of errors (if any), and warnings.
 
@@ -180,11 +195,20 @@ See [Lexicons](lexicons/) for the full schema reference and how to build custom 
 
 ## Using custom lexicons
 
-Any of the generation tools accept a `lexicon` parameter with an inline JSON string. This lets an LLM generate domain-specific text on the fly.
+There are two ways to load a lexicon into any generation tool:
 
-**Example prompt:** _"Generate a startup-themed paragraph using this lexicon"_
+1. **By file path** -- pass `lexiconPath` with an absolute path to a `.json` file on disk. This is the easiest option when you already have a lexicon file.
+2. **Inline JSON** -- pass `lexicon` with the full JSON string. Useful for one-off or dynamically constructed lexicons.
 
-The LLM passes the lexicon JSON as the `lexicon` parameter and sets `archetype: "startup"`:
+If both are provided, `lexiconPath` takes precedence.
+
+**Example prompt:** _"Generate a startup-themed paragraph using the lexicon at /home/me/lexicons/startup.json"_
+
+The LLM calls `generate_paragraph` with `lexiconPath: "/home/me/lexicons/startup.json"` and `archetype: "startup"`.
+
+### Inline lexicon example
+
+For quick, ad-hoc lexicons, an LLM can pass the JSON directly:
 
 ```json
 {
@@ -219,6 +243,38 @@ The LLM passes the lexicon JSON as the `lexicon` parameter and sets `archetype: 
   }
 }
 ```
+
+## Generator configuration
+
+All generation tools accept a `config` parameter -- a JSON string with any [GeneratorConfig](configuration) overrides. This lets you tune sentence structure rates, word counts, complexity limits, and more.
+
+**Example prompt:** _"Generate a paragraph with lots of questions and long sentences"_
+
+The LLM calls `generate_paragraph` with:
+
+```json
+{
+  "config": "{\"questionRate\":0.8,\"minWordsPerSentence\":15,\"maxWordsPerSentence\":30}"
+}
+```
+
+Common config options:
+
+| Option                     | Type         | Default | Description                          |
+| -------------------------- | ------------ | ------- | ------------------------------------ |
+| `minWordsPerSentence`      | number       | 5       | Minimum words per sentence           |
+| `maxWordsPerSentence`      | number       | 25      | Maximum words per sentence           |
+| `questionRate`             | number (0-1) | 0.10    | Rate of question sentences           |
+| `compoundRate`             | number (0-1) | 0.15    | Rate of compound sentences           |
+| `subordinateClauseRate`    | number (0-1) | 0.15    | Rate of subordinate clauses          |
+| `maxAdjectivesPerNoun`     | number       | 2       | Maximum adjectives before a noun     |
+| `maxAdverbsPerVerb`        | number       | 1       | Maximum adverbs per verb phrase      |
+| `maxPPChain`               | number       | 2       | Maximum prepositional phrase chains  |
+| `minSentencesPerParagraph` | number       | 2       | Minimum sentences per paragraph      |
+| `maxSentencesPerParagraph` | number       | 7       | Maximum sentences per paragraph      |
+| `sentenceTypeWeights`      | object       | --      | Weights for each sentence type       |
+
+Call `list_config` to see the full list with defaults.
 
 ## Deterministic output
 
