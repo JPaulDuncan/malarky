@@ -13,7 +13,7 @@ Malarky is a faker-like library and CLI that produces grammatically correct Engl
 {: .fs-5 .fw-300 }
 
 [Get Started](getting-started){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 }
-[View on GitHub](https://github.com/wonder/malarky){: .btn .fs-5 .mb-4 .mb-md-0 }
+[View on GitHub](https://github.com/jpaulduncan/malarky){: .btn .fs-5 .mb-4 .mb-md-0 }
 
 ---
 
