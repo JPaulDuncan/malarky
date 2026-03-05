@@ -11,7 +11,7 @@ plugins:
 
 aux_links:
   'GitHub':
-    - 'https://github.com/wonder/malarky'
+    - 'https://github.com/jpaulduncan/malarky'
 aux_links_new_tab: true
 
 footer_content: 'Malarky &copy; 2026. Distributed under the MIT License.'
