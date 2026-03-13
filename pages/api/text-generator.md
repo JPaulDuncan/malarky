@@ -104,6 +104,45 @@ console.log(result.trace.paragraphs[0].sentences[0].template);
 
 See [Guides > Tracing](../guides/tracing) for full trace documentation.
 
+### Registering custom transforms at runtime
+
+Use `getTransformRegistry()` when you want to register or inspect transforms on a specific generator instance:
+
+```typescript
+import type { IOutputTransform } from 'malarky';
+
+const shoutTransform: IOutputTransform = {
+  id: 'shout',
+  version: '1.0.0',
+  capabilities: {
+    requiresTrace: false,
+    posAware: false,
+    deterministic: true,
+    safeToStack: true,
+    preferredOrder: 50,
+  },
+  validateParams: () => ({ valid: true, errors: [] }),
+  apply: ({ tokens }) => ({
+    tokens: tokens.map((token) =>
+      token.type === 'word' && !token.meta?.protected
+        ? { ...token, value: token.value.toUpperCase() }
+        : token
+    ),
+  }),
+};
+
+generator.getTransformRegistry().register(shoutTransform);
+
+const result = generator.sentence({
+  outputTransforms: {
+    enabled: true,
+    pipeline: [{ id: 'shout' }],
+  },
+});
+```
+
+See [Output Transforms > Custom Transforms](../transforms/custom-transforms) for the full interface, registry API, and implementation tips.
+
 ## Adapters
 
 ### SimpleFakerAdapter

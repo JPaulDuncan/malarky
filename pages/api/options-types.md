@@ -43,6 +43,15 @@ generator.sentence({
 });
 ```
 
+`mergeMode` controls how a per-call `outputTransforms.pipeline` interacts with any generator, lexicon, or archetype pipeline that is already configured:
+
+| Mode        | Behavior                                                     |
+| ----------- | ------------------------------------------------------------ |
+| `'replace'` | Use only the per-call pipeline                               |
+| `'append'`  | Add the per-call steps after the existing configured pipeline |
+
+See [Output Transforms > Chaining & Configuration](../transforms/chaining-and-config) for ordering, protection, and merge examples.
+
 ## ParagraphOptions
 
 Options passed to `generator.paragraph()`.

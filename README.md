@@ -99,6 +99,7 @@ These options work with `sentence`, `paragraph`, and `text`:
 | `--seed <n>`         | `-s`  | RNG seed for deterministic output                       |
 | `--lexicon <path>`   | `-l`  | Path to a lexicon JSON file                             |
 | `--archetype <name>` | `-a`  | Archetype to activate from the lexicon                  |
+| `--hints <tags>`     |       | Activate lexicon tags (comma-separated)                 |
 | `--transform <id>`   | `-x`  | Apply an output transform (repeatable, comma-separated) |
 | `--trace`            | `-t`  | Output JSON trace to stderr                             |
 | `--json`             | `-j`  | Output full result as JSON to stdout                    |
@@ -239,11 +240,17 @@ const result = generator.sentence({
   outputTransforms: {
     enabled: true,
     pipeline: [{ id: 'pigLatin' }],
+    autoOrder: true,
+    protection: {
+      keepAcronyms: true,
+      minWordLength: 3,
+    },
   },
+  mergeMode: 'append',
 });
 ```
 
-Transforms can also be configured at the lexicon level or per-archetype in your lexicon JSON. See the [usage guide](https://jpaulduncan.github.io/malarky/) for details.
+Use `mergeMode: 'append'` to add per-call steps after an existing pipeline, or `mergeMode: 'replace'` to swap the pipeline entirely. Transforms can also be configured at the lexicon level or per-archetype in your lexicon JSON, and advanced options such as transform protection and pipeline ordering are covered in the [usage guide](https://jpaulduncan.github.io/malarky/) and the [Chaining & Configuration guide](https://jpaulduncan.github.io/malarky/transforms/chaining-and-config/).
 
 ## Sentence Types
 
@@ -490,6 +497,7 @@ For the complete API reference including all types, interfaces, and configuratio
 | `generator.setSeed(n)`         | Set RNG seed for reproducibility     |
 | `generator.setLexicon(lex)`    | Load or replace a lexicon at runtime |
 | `generator.setArchetype(name)` | Activate a style preset              |
+| `generator.getTransformRegistry()` | Access the transform registry for custom pipelines |
 | `validateLexicon(obj)`         | Validate a lexicon object            |
 | `loadLexiconFromString(json)`  | Parse a lexicon JSON string          |
 
